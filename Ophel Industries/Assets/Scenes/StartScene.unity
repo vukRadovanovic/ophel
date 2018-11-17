@@ -743,8 +743,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Enemy
   direction: {x: -1, y: 0}
-  coneAngle: 1.5707815
-  radius: 2
+  coneAngle: 1.57
+  radius: 5
 --- !u!61 &2050485417
 BoxCollider2D:
   m_ObjectHideFlags: 0
