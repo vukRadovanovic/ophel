@@ -136,13 +136,13 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 179885462}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.14862692, y: 0.16504526, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0.010337274, w: -0.9999466}
+  m_LocalPosition: {x: -0.14862704, y: 0.16504526, z: 0}
   m_LocalScale: {x: 5, y: 5, z: 1}
   m_Children: []
   m_Father: {fileID: 651975628}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 1.1850001}
 --- !u!114 &179885464
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -626,7 +626,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 651975625}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.22, y: -3.27, z: 0}
+  m_LocalPosition: {x: -1.67, y: -3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 179885463}
@@ -647,7 +647,10 @@ MonoBehaviour:
   targetPosition: {fileID: 1373597018}
   reachedEndOfPath: 0
   speed: 4
-  nextWaypointDistance: 3
+  nextWaypointDistance: 1
+  direction: {x: 1, y: 0}
+  radius: 0
+  coneAngle: 0
 --- !u!58 &651975630
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -858,7 +861,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1373597013}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.81, y: 1.46, z: 0}
+  m_LocalPosition: {x: 5.75, y: -2.7, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
