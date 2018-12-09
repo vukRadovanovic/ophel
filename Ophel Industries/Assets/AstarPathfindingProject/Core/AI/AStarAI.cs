@@ -40,55 +40,56 @@ public class AStarAI : MonoBehaviour {
                 seeker.StartPath(transform.position, targetPosition.position,
                                                   OnPathComplete);
             }
+        }
+        if (path == null) {
+            // We have no path to follow yet, so don't do anything
+            return;
+        }
 
-            if (path == null) {
-                // We have no path to follow yet, so don't do anything
-                return;
-            }
 
+        // Check in a loop if we are close enough to the current waypoint to switch to the next one.
+        // We do this in a loop because many waypoints might be close to each other and we may reach
+        // several of them in the same frame.
+        reachedEndOfPath = false;
+        // distance to the next waypoint in the path
+        float distanceToWaypoint;
 
-            // Check in a loop if we are close enough to the current waypoint to switch to the next one.
-            // We do this in a loop because many waypoints might be close to each other and we may reach
-            // several of them in the same frame.
-            reachedEndOfPath = false;
-            // distance to the next waypoint in the path
-            float distanceToWaypoint;
-
-            while (true) {
-                distanceToWaypoint = Vector3.Distance(transform.position, path.vectorPath[currentWaypoint]);
-                // next waypoint distance determines how soon the game object will slow down
-                if (distanceToWaypoint < nextWaypointDistance) {
-                    // Check if there is another waypoint or if we have reached the end of the path
-                    if (currentWaypoint + 1 < path.vectorPath.Count) {
-                        currentWaypoint++;
-                    }
-                    else {
-                        // Set a status variable to indicate that the agent has reached the end of the path.
-                        // You can use this to trigger some special code if your game requires that.
-                        reachedEndOfPath = true;
-                        break;
-                    }
+        while (true) {
+            distanceToWaypoint = Vector3.Distance(transform.position, path.vectorPath[currentWaypoint]);
+            // next waypoint distance determines how soon the game object will slow down
+            if (distanceToWaypoint < nextWaypointDistance) {
+                // Check if there is another waypoint or if we have reached the end of the path
+                if (currentWaypoint + 1 < path.vectorPath.Count) {
+                    currentWaypoint++;
                 }
                 else {
+                    // Set a status variable to indicate that the agent has reached the end of the path.
+                    // You can use this to trigger some special code if your game requires that.
+                    reachedEndOfPath = true;
                     break;
                 }
             }
-
-            // slow down smoothly upon approaching the last waypoint of the path
-            var speedFactor = reachedEndOfPath ? Mathf.Sqrt(distanceToWaypoint / nextWaypointDistance) : 1f;
-
-            // normalize direction to the next waypoint so that it has a length of 1 world unit
-            Vector3 dir = (path.vectorPath[currentWaypoint] - transform.position).normalized;
-            // multiply the direction by our desired speed to get a velocity
-            Vector3 velocity = dir * speed * speedFactor;
-
-            // move the game object to the target
-            direction = (transform.position + velocity * Time.deltaTime).normalized;
-            transform.position += velocity * Time.deltaTime;
+            else {
+                break;
+            }
         }
-	}
 
-	public void OnPathComplete(Path p) {
+        // slow down smoothly upon approaching the last waypoint of the path
+        var speedFactor = reachedEndOfPath ? Mathf.Sqrt(distanceToWaypoint / nextWaypointDistance) : 1f;
+
+        // normalize direction to the next waypoint so that it has a length of 1 world unit
+        Vector3 dir = (path.vectorPath[currentWaypoint] - transform.position).normalized;
+        // multiply the direction by our desired speed to get a velocity
+        Vector3 velocity = dir * speed * speedFactor;
+
+        // move the game object to the target
+        //direction = (velocity).normalized;  //  looking at path direction
+        direction = (targetPosition.position - transform.position).normalized; // looking at player
+        transform.position += velocity * Time.deltaTime;
+
+    }
+
+    public void OnPathComplete(Path p) {
 		if (DEBUG) {	
 			Debug.Log("Path complete");
 			Debug.Log("Vector path: " + p.vectorPath.Count);
