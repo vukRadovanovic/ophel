@@ -9,7 +9,7 @@ public class AStarAI : MonoBehaviour {
 	public float speed = 2f;
 	public float nextWaypointDistance = 3;
 	public Path path;
-    public Vector2 direction;
+    public Vector2 direction = new Vector2(1, 1);
     public float radius;
     public float coneAngle;
 
@@ -40,6 +40,11 @@ public class AStarAI : MonoBehaviour {
                 seeker.StartPath(transform.position, targetPosition.position,
                                                   OnPathComplete);
             }
+
+            Vector3 newDirection = (targetPosition.position - transform.position).normalized; // looking at player
+            Quaternion rotation = Quaternion.LookRotation(Vector3.forward, newDirection);
+            transform.rotation = new Quaternion(0, 0, rotation.z, rotation.w);
+            direction = newDirection;
         }
         if (path == null) {
             // We have no path to follow yet, so don't do anything
@@ -83,10 +88,7 @@ public class AStarAI : MonoBehaviour {
         Vector3 velocity = dir * speed * speedFactor;
 
         // move the game object to the target
-        //direction = (velocity).normalized;  //  looking at path direction
-        direction = (targetPosition.position - transform.position).normalized; // looking at player
         transform.position += velocity * Time.deltaTime;
-
     }
 
     public void OnPathComplete(Path p) {
