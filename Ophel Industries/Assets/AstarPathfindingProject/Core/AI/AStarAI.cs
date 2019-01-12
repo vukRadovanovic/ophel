@@ -7,7 +7,7 @@ public class AStarAI : MonoBehaviour {
 	public Transform targetPosition;
 	public bool reachedEndOfPath;
 	public float speed = 2f;
-	public float nextWaypointDistance = 3;
+	public float nextWaypointDistance = 1;
 	public Path path;
     public Vector2 direction = new Vector2(1, 1);
     public float radius;
@@ -39,6 +39,8 @@ public class AStarAI : MonoBehaviour {
                 prevTargetPosition = targetPosition.position;
                 seeker.StartPath(transform.position, targetPosition.position,
                                                   OnPathComplete);
+                reachedEndOfPath = false;
+                Debug.Log("Started new path");
             }
 
             Vector3 newDirection = (targetPosition.position - transform.position).normalized; // looking at player
@@ -50,7 +52,6 @@ public class AStarAI : MonoBehaviour {
             // We have no path to follow yet, so don't do anything
             return;
         }
-
 
         // Check in a loop if we are close enough to the current waypoint to switch to the next one.
         // We do this in a loop because many waypoints might be close to each other and we may reach
@@ -71,6 +72,7 @@ public class AStarAI : MonoBehaviour {
                     // Set a status variable to indicate that the agent has reached the end of the path.
                     // You can use this to trigger some special code if your game requires that.
                     reachedEndOfPath = true;
+
                     break;
                 }
             }
@@ -84,6 +86,7 @@ public class AStarAI : MonoBehaviour {
 
         // normalize direction to the next waypoint so that it has a length of 1 world unit
         Vector3 dir = (path.vectorPath[currentWaypoint] - transform.position).normalized;
+
         // multiply the direction by our desired speed to get a velocity
         Vector3 velocity = dir * speed * speedFactor;
 
@@ -155,7 +158,13 @@ public class AStarAI : MonoBehaviour {
                                 playerDetected = true;
                             }
                             else {
-                                playerDetected = false;
+                                raycastHit = Physics2D.Raycast(pos + (upperLeft - pos).normalized * col.bounds.extents.magnitude, upperLeft - pos);
+                                if (raycastHit.collider.name.Equals("Player")) {
+                                    playerDetected = true;
+                                }
+                                else {
+                                    playerDetected = false;
+                                }
                             }
                         }
                     }
