@@ -132,34 +132,34 @@ public class AStarAI : MonoBehaviour {
             RaycastHit2D raycastHit = Physics2D.Raycast(pos, upperLeft - pos);
             GameObject enemy = GameObject.Find(name);
             Collider2D col = enemy.GetComponent<Collider2D>();
-            if (raycastHit.collider.name.Equals("Player")) {
+            if (raycastHit == true && raycastHit.collider.name.Equals("Player")) {
                 playerDetected = true;
             }
             else { //since enemy is a collidable object, when rays are cast from the center of the enemy they hit the boundaries of the enemy first
                    // so we need to cast a ray from a circle outside of square (the square is inscribed in circle)
                    // casting 5 rays from the "center" of the enemy to corners and the center point of the player
                 raycastHit = Physics2D.Raycast(pos + (lowerLeft - pos).normalized * col.bounds.extents.magnitude, lowerLeft - pos);
-                if (raycastHit.collider.name.Equals("Player")) {
+                if (raycastHit == true && raycastHit.collider.name.Equals("Player")) {
                     playerDetected = true;
                 }
                 else {
                     raycastHit = Physics2D.Raycast(pos + (upperRight - pos).normalized * col.bounds.extents.magnitude, upperRight - pos);
-                    if (raycastHit.collider.name.Equals("Player")) {
+                    if (raycastHit == true && raycastHit.collider.name.Equals("Player")) {
                         playerDetected = true;
                     }
                     else {
                         raycastHit = Physics2D.Raycast(pos + (lowerRight - pos).normalized * col.bounds.extents.magnitude, lowerRight - pos);
-                        if (raycastHit.collider.name.Equals("Player")) {
+                        if (raycastHit == true && raycastHit.collider.name.Equals("Player")) {
                             playerDetected = true;
                         }
                         else {
                             raycastHit = Physics2D.Raycast(transform.position + (targetPosition.position - transform.position).normalized * col.bounds.extents.magnitude, targetPosition.position - transform.position);
-                            if (raycastHit.collider.name.Equals("Player")) {
+                            if (raycastHit == true && raycastHit.collider.name.Equals("Player")) {
                                 playerDetected = true;
                             }
                             else {
                                 raycastHit = Physics2D.Raycast(pos + (upperLeft - pos).normalized * col.bounds.extents.magnitude, upperLeft - pos);
-                                if (raycastHit.collider.name.Equals("Player")) {
+                                if (raycastHit == true && raycastHit.collider.name.Equals("Player")) {
                                     playerDetected = true;
                                 }
                                 else {
@@ -175,5 +175,16 @@ public class AStarAI : MonoBehaviour {
             playerDetected = false;
         }
         return playerDetected;
+    }
+
+    bool isCloseToWall() {
+        Collider2D collider  = this.GetComponent<Collider2D>();
+        Vector3 direction = this.transform.forward;
+        Vector3 pos = this.transform.position;
+        RaycastHit2D raycastHit = Physics2D.Raycast(pos + collider.bounds.extents.magnitude * direction, direction);
+        if(raycastHit != false && raycastHit.collider.tag.Equals("Wall")) {
+            return true;
+        }
+        return false;
     }
 }
