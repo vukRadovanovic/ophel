@@ -94,7 +94,8 @@ public class AStarAI : MonoBehaviour {
         // move the game object to the target
         transform.position += velocity * Time.deltaTime;
 
-        if (reachedEndOfPath && isCloseToWall()) {
+        if (reachedEndOfPath && isCloseToWall()) { 
+            //start rotation function (that is not a function its a coroutine)
             StartCoroutine(Rotate(Vector3.forward, Mathf.Rad2Deg*coneAngle*2.0f, 0.25f));
         }
     }
@@ -184,29 +185,34 @@ public class AStarAI : MonoBehaviour {
         return playerDetected;
     }
 
+    //checks if enemy's cone of vision hits the damn wall
     bool isCloseToWall() {
         Collider2D collider  = this.GetComponent<Collider2D>();
-        Vector3 raycastDir = transform.up;
+        Vector3 raycastDir = transform.up; 
         Vector3 pos = this.transform.position;
-        RaycastHit2D raycastHit = Physics2D.Raycast(pos + collider.bounds.extents.magnitude * raycastDir, raycastDir);
-        if(raycastHit != false && raycastHit.collider.tag.Equals("Wall")) {
-            if(raycastHit.distance < radius)
+        RaycastHit2D raycastHit = Physics2D.Raycast(pos + collider.bounds.extents.magnitude * raycastDir, raycastDir); //casts a ray to enemy's front direction
+        if(raycastHit != false && raycastHit.collider.tag.Equals("Wall") && raycastHit.distance < radius) { //if wall is hit and inside of vision radius
             return true;
         }
         return false;
     }
 
+    /**
+     * rotates the enemy
+     */
     IEnumerator Rotate(Vector3 axis, float angle, float duration = 1.0f) {
-        Quaternion from = transform.rotation;
-        Quaternion to = transform.rotation;
+        // quaternion that saves the code from self destruction
+        Quaternion from = transform.rotation; //initializing
+        Quaternion to = transform.rotation; 
+        //rotation that we want to do
         to *= Quaternion.Euler(axis * angle);
 
-        float elapsed = 0.0f;
-        while (elapsed < duration) {
-            transform.rotation = Quaternion.Slerp(from, to, elapsed / duration);
-            elapsed += Time.deltaTime;
+        float elapsed = 0.0f; // counter
+        while (elapsed < duration) { 
+            transform.rotation = Quaternion.Slerp(from, to, elapsed / duration); //linear interpolation
+            elapsed += Time.deltaTime; //update counter
             yield return null;
         }
-        transform.rotation = to;
+        transform.rotation = to; //final rotation
     }
 }
