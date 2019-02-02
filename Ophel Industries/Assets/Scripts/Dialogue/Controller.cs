@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 namespace Dialogue {
+  // TODO: use singleton pattern
   public class Controller : MonoBehaviour {
     public Text nameDisplay;
     public Text phraseDisplay;

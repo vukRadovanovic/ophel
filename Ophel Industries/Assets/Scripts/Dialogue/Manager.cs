@@ -4,16 +4,41 @@ using UnityEngine;
 
 namespace Dialogue {
   // TODO: make manager able to be loaded by controller
+  // TODO: use singleton pattern
   public class Manager : MonoBehaviour {
     private Message[] messages;
     private int dialogueIndex;
+    private Loader dialogueLoader;
 
     void Awake() {
-      messages = new Message[3];
-      messages[0] = new Message("Jim", "Hello, my name is Jim.", 0.15f);
-      messages[1] = new Message("Jim #2", "Hi, my name is Jim too.", 0.05f);
-      messages[2] = new Message("Jim #3", "Salutations", 0.3f);
       dialogueIndex = 0;
+      dialogueLoader = new Loader();
+
+      // FIXME: temporary testing for loader
+      LoadConversation("Initial", 0);
+    }
+
+    /**
+     * Load a conversation into the manager using the dialogue from its JSON
+     * file.
+     */
+    public void LoadConversation(string dialogueFile, int convoId) {
+      string dFilePath = Loader.DIALOGUE_PATH + dialogueFile;
+
+      // load the conversations from the dialogue file
+      Dialogue.Conversation[] loadedConvos =
+          dialogueLoader.NestedLoad<Dialogue.Conversation>(dFilePath);
+
+      // find the desired conversation from the array of conversations
+      Dialogue.Conversation convo = loadedConvos[convoId];
+      
+      if (convo.id != convoId) {
+        // TODO: raise error instead
+        Debug.Log("ERROR: invalid conversation retrieved");
+        return;
+      }
+
+      messages = convo.messages;
     }
 
     /**

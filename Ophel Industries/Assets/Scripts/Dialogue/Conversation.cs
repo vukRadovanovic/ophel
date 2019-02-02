@@ -1,8 +1,11 @@
 namespace Dialogue {
+  [System.Serializable]
   public class Conversation {
     public Message[] messages;
-
-    public Conversation(int size) {
+    public int id;
+    
+    public Conversation(int id_num, int size) {
+      id = id_num;
       messages = new Message[size];
     }
 

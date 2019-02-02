@@ -1,8 +1,9 @@
 namespace Dialogue {
+  [System.Serializable]
   public class Message {
-    public string name;
-    public string phrase;
-    public float typeSpeed;
+    public string name; 
+    public string phrase; 
+    public float typeSpeed; 
     // public ??? image;
     // public ??? fontColor;
 
