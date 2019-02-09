@@ -164,6 +164,10 @@ Prefab:
       propertyPath: m_LocalScale.y
       value: 13.350587
       objectReference: {fileID: 0}
+    - target: {fileID: 1799167263862932, guid: 1dae2c90b5ae63545941527a1e0a3e4d, type: 2}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1dae2c90b5ae63545941527a1e0a3e4d, type: 2}
   m_IsPrefabParent: 0
@@ -340,6 +344,10 @@ Prefab:
       propertyPath: m_Name
       value: Wall (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 1799167263862932, guid: 1dae2c90b5ae63545941527a1e0a3e4d, type: 2}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1dae2c90b5ae63545941527a1e0a3e4d, type: 2}
   m_IsPrefabParent: 0
@@ -454,7 +462,6 @@ MonoBehaviour:
   reachedEndOfPath: 0
   speed: 4
   nextWaypointDistance: 1
-  direction: {x: 0, y: 1}
   radius: 5
   coneAngle: 0.3925
 --- !u!58 &651975630
@@ -530,6 +537,10 @@ Prefab:
     - target: {fileID: 4641867938567718, guid: 1dae2c90b5ae63545941527a1e0a3e4d, type: 2}
       propertyPath: m_RootOrder
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1799167263862932, guid: 1dae2c90b5ae63545941527a1e0a3e4d, type: 2}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1dae2c90b5ae63545941527a1e0a3e4d, type: 2}
@@ -657,6 +668,10 @@ Prefab:
     - target: {fileID: 4641867938567718, guid: 1dae2c90b5ae63545941527a1e0a3e4d, type: 2}
       propertyPath: m_LocalScale.y
       value: 13.691368
+      objectReference: {fileID: 0}
+    - target: {fileID: 1799167263862932, guid: 1dae2c90b5ae63545941527a1e0a3e4d, type: 2}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1dae2c90b5ae63545941527a1e0a3e4d, type: 2}
@@ -840,6 +855,10 @@ Prefab:
     - target: {fileID: 4641867938567718, guid: 1dae2c90b5ae63545941527a1e0a3e4d, type: 2}
       propertyPath: m_LocalScale.y
       value: 3.808611
+      objectReference: {fileID: 0}
+    - target: {fileID: 1799167263862932, guid: 1dae2c90b5ae63545941527a1e0a3e4d, type: 2}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1dae2c90b5ae63545941527a1e0a3e4d, type: 2}

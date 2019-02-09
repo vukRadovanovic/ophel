@@ -18,8 +18,11 @@ public class AStarAI : MonoBehaviour {
 	private Seeker seeker;
 	private bool DEBUG = false;
 
-	// Use this for initialization
-	void Start () {
+    private bool wallRotation;
+    private bool endOfPathRotation, nextRotation;
+    private bool rotated;
+    // Use this for initialization
+    void Start () {
 		seeker = GetComponent<Seeker>();
 
         if (isPlayerVisible()) {
@@ -29,6 +32,10 @@ public class AStarAI : MonoBehaviour {
         }
 
 		prevTargetPosition = targetPosition.position;
+        rotated = false;
+        wallRotation = false;
+        endOfPathRotation = false;
+        nextRotation = false;
 	}
 
 	public void Update () {
@@ -42,6 +49,8 @@ public class AStarAI : MonoBehaviour {
                 seeker.StartPath(transform.position, targetPosition.position,
                                                   OnPathComplete);
                 reachedEndOfPath = false;
+                nextRotation = false;
+                rotated = false;
                 Debug.Log("Started new path");
             }
 
@@ -73,6 +82,9 @@ public class AStarAI : MonoBehaviour {
                     // Set a status variable to indicate that the agent has reached the end of the path.
                     // You can use this to trigger some special code if your game requires that.
                     reachedEndOfPath = true;
+                    if (isPlayerVisible()) {
+                        reachedEndOfPath = false;
+                    }
 
                     break;
                 }
@@ -94,9 +106,21 @@ public class AStarAI : MonoBehaviour {
         // move the game object to the target
         transform.position += velocity * Time.deltaTime;
 
-        if (reachedEndOfPath && isCloseToWall()) { 
+        if (reachedEndOfPath) {
             //start rotation function (that is not a function its a coroutine)
-            StartCoroutine(Rotate(Vector3.forward, Mathf.Rad2Deg*coneAngle*2.0f, 0.25f));
+            if (isCloseToWall() && !endOfPathRotation && !wallRotation) {
+                StartCoroutine(Rotate(Vector3.forward, Mathf.Rad2Deg * coneAngle * 2.0f, 0.25f, true));
+                rotated = true;
+            }
+            else if(!wallRotation && !endOfPathRotation && !nextRotation && !rotated){
+                nextRotation = true;
+                StartCoroutine(Rotate(Vector3.forward, 90, 0.25f));
+                rotated = true;
+            }
+            if(nextRotation && !endOfPathRotation && !wallRotation) {
+                StartCoroutine(Rotate(Vector3.forward, -180, 0.50f));
+                nextRotation = false;
+            }
         }
     }
 
@@ -200,7 +224,13 @@ public class AStarAI : MonoBehaviour {
     /**
      * rotates the enemy
      */
-    IEnumerator Rotate(Vector3 axis, float angle, float duration = 1.0f) {
+    IEnumerator Rotate(Vector3 axis, float angle, float duration = 1.0f, bool isWall = false) {
+        if (isWall) {
+            wallRotation = true;
+        }
+        else {
+            endOfPathRotation = true;
+        }
         // quaternion that saves the code from self destruction
         Quaternion from = transform.rotation; //initializing
         Quaternion to = transform.rotation; 
@@ -214,5 +244,11 @@ public class AStarAI : MonoBehaviour {
             yield return null;
         }
         transform.rotation = to; //final rotation
+        if (isWall) {
+            wallRotation = false;
+        }
+        else {
+            endOfPathRotation = false;
+        }
     }
 }
