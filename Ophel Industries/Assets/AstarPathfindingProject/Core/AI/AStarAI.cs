@@ -9,7 +9,7 @@ public class AStarAI : MonoBehaviour {
 	public float speed = 2f;
 	public float nextWaypointDistance = 1;
 	public Path path;
-    public Vector2 direction = new Vector2(1, 1);
+    
     public float radius;
     public float coneAngle;
 
@@ -18,8 +18,11 @@ public class AStarAI : MonoBehaviour {
 	private Seeker seeker;
 	private bool DEBUG = false;
 
-	// Use this for initialization
-	void Start () {
+    private bool wallRotation;
+    private bool endOfPathRotation, nextRotation;
+    private bool rotated;
+    // Use this for initialization
+    void Start () {
 		seeker = GetComponent<Seeker>();
 
         if (isPlayerVisible()) {
@@ -29,9 +32,15 @@ public class AStarAI : MonoBehaviour {
         }
 
 		prevTargetPosition = targetPosition.position;
+        rotated = false;
+        wallRotation = false;
+        endOfPathRotation = false;
+        nextRotation = false;
 	}
 
 	public void Update () {
+        Debug.DrawRay(this.transform.position, this.transform.up, Color.magenta, 0.0f, false);
+        //Debug.DrawRay(this.transform.position, direction, Color.blue, 10.0f, false);
         // If player is visible, chase him
         if (isPlayerVisible()) {
             // update the path if the target transform.position has changed
@@ -40,13 +49,14 @@ public class AStarAI : MonoBehaviour {
                 seeker.StartPath(transform.position, targetPosition.position,
                                                   OnPathComplete);
                 reachedEndOfPath = false;
+                nextRotation = false;
+                rotated = false;
                 Debug.Log("Started new path");
             }
 
             Vector3 newDirection = (targetPosition.position - transform.position).normalized; // looking at player
             Quaternion rotation = Quaternion.LookRotation(Vector3.forward, newDirection);
             transform.rotation = new Quaternion(0, 0, rotation.z, rotation.w);
-            direction = newDirection;
         }
         if (path == null) {
             // We have no path to follow yet, so don't do anything
@@ -72,6 +82,9 @@ public class AStarAI : MonoBehaviour {
                     // Set a status variable to indicate that the agent has reached the end of the path.
                     // You can use this to trigger some special code if your game requires that.
                     reachedEndOfPath = true;
+                    if (isPlayerVisible()) {
+                        reachedEndOfPath = false;
+                    }
 
                     break;
                 }
@@ -92,6 +105,23 @@ public class AStarAI : MonoBehaviour {
 
         // move the game object to the target
         transform.position += velocity * Time.deltaTime;
+
+        if (reachedEndOfPath) {
+            //start rotation function (that is not a function its a coroutine)
+            if (isCloseToWall() && !endOfPathRotation && !wallRotation) {
+                StartCoroutine(Rotate(Vector3.forward, Mathf.Rad2Deg * coneAngle * 2.0f, 0.25f, true));
+                rotated = true;
+            }
+            else if(!wallRotation && !endOfPathRotation && !nextRotation && !rotated){
+                nextRotation = true;
+                StartCoroutine(Rotate(Vector3.forward, 90, 0.25f));
+                rotated = true;
+            }
+            if(nextRotation && !endOfPathRotation && !wallRotation) {
+                StartCoroutine(Rotate(Vector3.forward, -180, 0.50f));
+                nextRotation = false;
+            }
+        }
     }
 
     public void OnPathComplete(Path p) {
@@ -118,7 +148,9 @@ public class AStarAI : MonoBehaviour {
     public bool isPlayerVisible() {
         bool playerDetected = false;
         float distance = (targetPosition.position - transform.position).magnitude;
-        float angle = Mathf.Acos(Vector2.Dot((targetPosition.position - transform.position), direction) / ((targetPosition.position - transform.position).magnitude * direction.magnitude));
+        float angle = Mathf.Acos(Vector2.Dot((targetPosition.position - transform.position), transform.up)
+                                 / ((targetPosition.position - transform.position).magnitude * transform.up.magnitude)
+                                 );
         if (distance < radius && angle < coneAngle) {
             GameObject player = GameObject.Find("Player");
             Collider2D collider = player.GetComponent<Collider2D>();
@@ -132,34 +164,34 @@ public class AStarAI : MonoBehaviour {
             RaycastHit2D raycastHit = Physics2D.Raycast(pos, upperLeft - pos);
             GameObject enemy = GameObject.Find(name);
             Collider2D col = enemy.GetComponent<Collider2D>();
-            if (raycastHit.collider.name.Equals("Player")) {
+            if (raycastHit == true && raycastHit.collider.name.Equals("Player")) {
                 playerDetected = true;
             }
             else { //since enemy is a collidable object, when rays are cast from the center of the enemy they hit the boundaries of the enemy first
                    // so we need to cast a ray from a circle outside of square (the square is inscribed in circle)
                    // casting 5 rays from the "center" of the enemy to corners and the center point of the player
                 raycastHit = Physics2D.Raycast(pos + (lowerLeft - pos).normalized * col.bounds.extents.magnitude, lowerLeft - pos);
-                if (raycastHit.collider.name.Equals("Player")) {
+                if (raycastHit == true && raycastHit.collider.name.Equals("Player")) {
                     playerDetected = true;
                 }
                 else {
                     raycastHit = Physics2D.Raycast(pos + (upperRight - pos).normalized * col.bounds.extents.magnitude, upperRight - pos);
-                    if (raycastHit.collider.name.Equals("Player")) {
+                    if (raycastHit == true && raycastHit.collider.name.Equals("Player")) {
                         playerDetected = true;
                     }
                     else {
                         raycastHit = Physics2D.Raycast(pos + (lowerRight - pos).normalized * col.bounds.extents.magnitude, lowerRight - pos);
-                        if (raycastHit.collider.name.Equals("Player")) {
+                        if (raycastHit == true && raycastHit.collider.name.Equals("Player")) {
                             playerDetected = true;
                         }
                         else {
                             raycastHit = Physics2D.Raycast(transform.position + (targetPosition.position - transform.position).normalized * col.bounds.extents.magnitude, targetPosition.position - transform.position);
-                            if (raycastHit.collider.name.Equals("Player")) {
+                            if (raycastHit == true && raycastHit.collider.name.Equals("Player")) {
                                 playerDetected = true;
                             }
                             else {
                                 raycastHit = Physics2D.Raycast(pos + (upperLeft - pos).normalized * col.bounds.extents.magnitude, upperLeft - pos);
-                                if (raycastHit.collider.name.Equals("Player")) {
+                                if (raycastHit == true && raycastHit.collider.name.Equals("Player")) {
                                     playerDetected = true;
                                 }
                                 else {
@@ -175,5 +207,48 @@ public class AStarAI : MonoBehaviour {
             playerDetected = false;
         }
         return playerDetected;
+    }
+
+    //checks if enemy's cone of vision hits the damn wall
+    bool isCloseToWall() {
+        Collider2D collider  = this.GetComponent<Collider2D>();
+        Vector3 raycastDir = transform.up; 
+        Vector3 pos = this.transform.position;
+        RaycastHit2D raycastHit = Physics2D.Raycast(pos + collider.bounds.extents.magnitude * raycastDir, raycastDir); //casts a ray to enemy's front direction
+        if(raycastHit != false && raycastHit.collider.tag.Equals("Wall") && raycastHit.distance < radius) { //if wall is hit and inside of vision radius
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * rotates the enemy
+     */
+    IEnumerator Rotate(Vector3 axis, float angle, float duration = 1.0f, bool isWall = false) {
+        if (isWall) {
+            wallRotation = true;
+        }
+        else {
+            endOfPathRotation = true;
+        }
+        // quaternion that saves the code from self destruction
+        Quaternion from = transform.rotation; //initializing
+        Quaternion to = transform.rotation; 
+        //rotation that we want to do
+        to *= Quaternion.Euler(axis * angle);
+
+        float elapsed = 0.0f; // counter
+        while (elapsed < duration) { 
+            transform.rotation = Quaternion.Slerp(from, to, elapsed / duration); //linear interpolation
+            elapsed += Time.deltaTime; //update counter
+            yield return null;
+        }
+        transform.rotation = to; //final rotation
+        if (isWall) {
+            wallRotation = false;
+        }
+        else {
+            endOfPathRotation = false;
+        }
     }
 }
