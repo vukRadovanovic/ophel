@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Pathfinding;
+using UnityEngine.UI;
 
 public class AStarAI : MonoBehaviour {
 	public Transform targetPosition;
@@ -9,6 +10,8 @@ public class AStarAI : MonoBehaviour {
 	public float speed = 2f;
 	public float nextWaypointDistance = 1;
 	public Path path;
+
+    static public bool caughtPlayer;
     
     public float radius;
     public float coneAngle;
@@ -249,6 +252,18 @@ public class AStarAI : MonoBehaviour {
         }
         else {
             endOfPathRotation = false;
+        }
+    }
+
+    //private void OnCollision2DEnter(Collision collision) {
+    //    if(collision.gameObject.name == "Player") {
+    //        Debug.Log("Game Over!");
+    //    }
+    //}
+
+    private void OnCollisionEnter2D(Collision2D collision) {
+        if (collision.gameObject.name == "Player") {
+            caughtPlayer = true;
         }
     }
 }
