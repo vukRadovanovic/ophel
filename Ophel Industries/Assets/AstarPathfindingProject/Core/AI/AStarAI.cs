@@ -26,6 +26,7 @@ public class AStarAI : MonoBehaviour {
     private bool rotated;
     // Use this for initialization
     void Start () {
+        caughtPlayer = false;
 		seeker = GetComponent<Seeker>();
 
         if (isPlayerVisible()) {
