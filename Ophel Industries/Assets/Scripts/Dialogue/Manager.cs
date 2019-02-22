@@ -3,16 +3,53 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace Dialogue {
-  // TODO: make manager able to be loaded by controller
   public class Manager : MonoBehaviour {
+    private static Manager _instance;
+    public static Manager Instance { get { return _instance; } }
+    
     private Message[] messages;
     private int dialogueIndex;
+    private Loader dialogueLoader;
 
+    /**
+     * Enforce singleton pattern and initialize instance variables.
+     */
     void Awake() {
-      messages = new Message[3];
-      messages[0] = new Message("Jim", "Hello, my name is Jim.", 0.15f);
-      messages[1] = new Message("Jim #2", "Hi, my name is Jim too.", 0.05f);
-      messages[2] = new Message("Jim #3", "Salutations", 0.3f);
+      // check if instance has been initialized
+      if (_instance == null)  {
+        _instance = this;
+      }
+      // destroy any other instances
+      else if (_instance != this) {
+        Destroy(gameObject);
+      }
+      
+      // allow this gameobject to persist across scenes
+      DontDestroyOnLoad(gameObject);
+
+      dialogueIndex = 0;
+      dialogueLoader = new Loader();
+    }
+
+    /**
+     * Load a conversation into the manager using the dialogue from its JSON
+     * file.
+     */
+    public void LoadConversation(string dialogueFile, int convoId) {
+      string dFilePath = Loader.DIALOGUE_PATH + dialogueFile;
+
+      // load the conversations from the dialogue file
+      Dialogue.Conversation[] loadedConvos =
+          dialogueLoader.NestedLoad<Dialogue.Conversation>(dFilePath);
+
+      // find the desired conversation from the array of conversations
+      Dialogue.Conversation convo = loadedConvos[convoId];
+      
+      if (convo.id != convoId) {
+        throw new System.Exception("Invalid conversation retrieved");
+      }
+
+      messages = convo.messages;
       dialogueIndex = 0;
     }
 
