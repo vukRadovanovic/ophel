@@ -6,8 +6,6 @@ public class JsonParser {
 
   public static T[] MultiDeserialize<T>(string jsonStr) {
     JsonContainer<T> container = GatherJsonItems<T>(jsonStr);
-    Debug.Log(container);
-    Debug.Log(container.jsonItems);
     return container.jsonItems;
   }
 

@@ -1,0 +1,30 @@
+{
+  "jsonItems":
+    [
+      {
+        "id": 0,
+        "messages": [
+          {
+            "name": "Victor",
+            "phrase": "What is your name?",
+            "typeSpeed": 0.05
+          },
+          {
+            "name": "Pan",
+            "phrase": "My name is Pan.",
+            "typeSpeed": 0.05
+          }
+        ]
+      },
+      {
+        "id": 1,
+        "messages": [
+          {
+            "name": "Victor",
+            "phrase": "Okay, this is the second thing I say.",
+            "typeSpeed": 0.15
+          }
+        ]
+      }
+    ]
+}

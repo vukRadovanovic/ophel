@@ -4,13 +4,15 @@ using UnityEngine;
 using UnityEngine.UI;
 
 namespace Dialogue {
-  // TODO: use singleton pattern
   public class Controller : MonoBehaviour {
+    private static Controller _instance;
+    public static Controller Instance { get { return _instance; } }
+
     public Text nameDisplay;
     public Text phraseDisplay;
     public GameObject boxDisplay;
+    public bool isTalking;
 
-    private Dialogue.Manager manager;
     private string name;
     private string phrase;
     private float typeSpeed;
@@ -18,16 +20,24 @@ namespace Dialogue {
     private bool isOpen;
 
     /**
-     * Find the dialogue manager.
+     * Enforce singleton pattern and initialize instance variables. 
      */
     void Awake() {
-      manager = GameObject.Find("GameManager").GetComponent<Dialogue.Manager>();
+      // check if instance has been initialized
+      if (_instance == null) {
+        _instance = this;
+      }
+      // destroy any other instances
+      else if (_instance != this) {
+        Destroy(gameObject);
+      }
+
+      // allow this gameobject to persist across scenes
+      DontDestroyOnLoad(gameObject);
+
       isOpen = false;
       finishedDisplay = true;
-
-      if (manager == null) {
-        Debug.Log("Dialogue manager not found");
-      }
+      isTalking = false;
     }
     
 	  /**
@@ -42,19 +52,36 @@ namespace Dialogue {
      * wants to move on to the next message.
      */
 	  void Update() {
+      /*
       if (phraseDisplay.text == phrase) {
         HandleMessageFinished();
       }
-		  if (Input.GetKeyDown(KeyCode.Space) && finishedDisplay) {
-        if (isOpen) {
-          HandleContinue();
-        }
-        else if (!manager.IsFinished()) {
+
+      if (Input.GetKeyDown(KeyCode.Space) && isOpen && finishedDisplay) {
+        HandleContinue();
+      }
+      else if (Dialogue.Manager.Instance.openDialogue) {
+          Debug.Log("Want to open dialogue");
+          Dialogue.Manager.Instance.openDialogue = false;
           OpenMessageDisplay();
           DisplayCurrentMessage();
-        }
       }
+      */
 	  }
+
+    public void HandleInput() {
+      if (phraseDisplay.text == phrase) {
+        HandleMessageFinished();
+      }
+
+      if (isOpen && finishedDisplay) {
+        HandleContinue();
+      }
+      else if (!isOpen) {
+        OpenMessageDisplay();
+        DisplayCurrentMessage();
+      }
+    }
 
     /**
      * Open the message display.
@@ -64,7 +91,7 @@ namespace Dialogue {
       phraseDisplay.gameObject.SetActive(true);
       boxDisplay.gameObject.SetActive(true);
       isOpen = true;
-      // Time.timeScale = 0;
+      isTalking = true;
     }
 
     /**
@@ -75,7 +102,7 @@ namespace Dialogue {
       phraseDisplay.gameObject.SetActive(false);
       boxDisplay.gameObject.SetActive(false);
       isOpen = false;
-      // Time.timeScale = 1;
+      isTalking = false;
     }
 
     /**
@@ -91,9 +118,9 @@ namespace Dialogue {
      * box if no messages are left given that the user wants to continue.
      */
     void HandleContinue() {
-        manager.MoveNext();
+        Dialogue.Manager.Instance.MoveNext();
 
-        if (manager.IsFinished()) {
+        if (Dialogue.Manager.Instance.IsFinished()) {
           CloseMessageDisplay();
         }
         else {
@@ -116,7 +143,7 @@ namespace Dialogue {
      * the current message.
      */
     void UpdateMessageFields() {
-        Message currMessage = manager.CurrentMessage();
+        Message currMessage = Dialogue.Manager.Instance.CurrentMessage();
         name = currMessage.name;
         phrase = currMessage.phrase;
         typeSpeed = currMessage.typeSpeed;

@@ -1,0 +1,70 @@
+{
+  "jsonItems":
+    [
+      {
+        "id": 0,
+        "messages": [
+          {
+            "name": "Board Member 1",
+            "phrase": "With the ... removal of Alvis Hughes, the direction of this company has taken a favorable turn. We are making good time.",
+            "typeSpeed": 0.05
+          },
+          {
+            "name": "Board Member 2",
+            "phrase": "Yes, if we keep going at this rate, we might just make a puff of smoke and a ball of yarn.",
+            "typeSpeed": 0.05
+          },
+          {
+            "name": "Board Member 2",
+            "phrase": "Your plans have yet again underwhelmed me, friend. This new CEO is hardly what we need.", 
+            "typeSpeed": 0.05
+          },
+          {
+            "name": "Board Member 2",
+            "phrase": "He is too unpredictable - his own desires fo not coincide with our own.",
+            "typeSpeed": 0.05
+          },
+          {
+            "name": "Board Member 2",
+            "phrase": "I say we oust this fickle-minded fool and find another one.",
+            "typeSpeed": 0.05
+          },
+          {
+            "name": "Board Member 3",
+            "phrase": "Alvis was too much of an idealist, and that's why he was a liability.",
+            "typeSpeed": 0.05
+          },
+          {
+            "name": "Board Member 3",
+            "phrase": "It is true that this new CEO, Victor Morana, may not agree with out methods, but he is greedy.",
+            "typeSpeed": 0.05
+          },
+          {
+            "name": "Board Member 3",
+            "phrase": "That makes him easy to control.",
+            "typeSpeed": 0.05
+          },
+          {
+            "name": "Board Member 3",
+            "phrase": "Ophel Industries is the best way for us to achieve our goals.",
+            "typeSpeed": 0.05
+          },
+          {
+            "name": "Board Member 3",
+            "phrase": "Mr. Morana is currently our greatest asset, but he doesn't have to be our ally. Now let us adjourn.",
+            "typeSpeed": 0.05
+          }
+        ]
+      },
+      {
+        "id": 1,
+        "messages": [
+          {
+            "name": "Victor",
+            "phrase": "I don't remember what he said",
+            "typeSpeed": 0.6
+          }
+        ]
+      }
+    ]
+}

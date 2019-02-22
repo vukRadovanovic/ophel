@@ -3,19 +3,32 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace Dialogue {
-  // TODO: make manager able to be loaded by controller
-  // TODO: use singleton pattern
   public class Manager : MonoBehaviour {
+    private static Manager _instance;
+    public static Manager Instance { get { return _instance; } }
+    
     private Message[] messages;
     private int dialogueIndex;
     private Loader dialogueLoader;
 
+    /**
+     * Enforce singleton pattern and initialize instance variables.
+     */
     void Awake() {
+      // check if instance has been initialized
+      if (_instance == null)  {
+        _instance = this;
+      }
+      // destroy any other instances
+      else if (_instance != this) {
+        Destroy(gameObject);
+      }
+      
+      // allow this gameobject to persist across scenes
+      DontDestroyOnLoad(gameObject);
+
       dialogueIndex = 0;
       dialogueLoader = new Loader();
-
-      // FIXME: temporary testing for loader
-      LoadConversation("Initial", 0);
     }
 
     /**
@@ -33,12 +46,11 @@ namespace Dialogue {
       Dialogue.Conversation convo = loadedConvos[convoId];
       
       if (convo.id != convoId) {
-        // TODO: raise error instead
-        Debug.Log("ERROR: invalid conversation retrieved");
-        return;
+        throw new System.Exception("Invalid conversation retrieved");
       }
 
       messages = convo.messages;
+      dialogueIndex = 0;
     }
 
     /**
