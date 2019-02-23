@@ -52,24 +52,29 @@ public class AStarAI : MonoBehaviour {
         //Debug.DrawRay(this.transform.position, direction, Color.blue, 10.0f, false);
         // If player is visible, chase him
         if (isPlayerVisible()) {
-            // update the path if the target transform.position has changed
-            if (targetPosition.position != prevTargetPosition) {
-                prevTargetPosition = targetPosition.position;
-                seeker.StartPath(transform.position, targetPosition.position,
-                                                  OnPathComplete);
-                reachedEndOfPath = false;
-                nextRotation = false;
-                rotated = false;
-                Debug.Log("Started new path");
-            }
-
-            Vector3 newDirection = (targetPosition.position - transform.position).normalized; // looking at player
-            Quaternion rotation = Quaternion.LookRotation(Vector3.forward, newDirection);
-            transform.rotation = new Quaternion(0, 0, rotation.z, rotation.w);
-            if(detectionMeter.detectionRate != 100) {
+            if (detectionMeter.detectionRate < 100) {
                 detectionMeter.detectionRate++;
+
+                // update the path if the target transform.position has changed
+                if (targetPosition.position != prevTargetPosition) {
+                    prevTargetPosition = targetPosition.position;
+                    seeker.StartPath(transform.position, targetPosition.position,
+                                                      OnPathComplete);
+                    reachedEndOfPath = false;
+                    nextRotation = false;
+                    rotated = false;
+                    Debug.Log("Started new path");
+                }
+
+                Vector3 newDirection = (targetPosition.position - transform.position).normalized; // looking at player
+                Quaternion rotation = Quaternion.LookRotation(Vector3.forward, newDirection);
+                transform.rotation = new Quaternion(0, 0, rotation.z, rotation.w);
             }
-            Debug.Log(detectionMeter.detectionRate);
+        }
+        else {
+            if (detectionMeter.detectionRate != 0) {
+                detectionMeter.detectionRate--;
+            }
         }
         if (path == null) {
             // We have no path to follow yet, so don't do anything
@@ -117,7 +122,9 @@ public class AStarAI : MonoBehaviour {
         Vector3 velocity = dir * speed * speedFactor;
 
         // move the game object to the target
-        transform.position += velocity * Time.deltaTime;
+        if(detectionMeter.detectionRate == 100  || (!isPlayerVisible() && !reachedEndOfPath)) {
+            transform.position += velocity * Time.deltaTime;
+        }
 
         if (reachedEndOfPath) {
             //start rotation function (that is not a function its a coroutine)
