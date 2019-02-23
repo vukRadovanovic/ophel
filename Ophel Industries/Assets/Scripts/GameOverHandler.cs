@@ -17,8 +17,7 @@ public class GameOverHandler : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         if (AStarAI.caughtPlayer) {
-            gameOver.text = "Game Over!";
-            PlayerMovement.movementEnabled = false;
+            GameOver(gameOver);
         }
         if(PlayerMovement.movementEnabled == false) {
             if (Input.GetKey(KeyCode.Space)) {
@@ -27,4 +26,9 @@ public class GameOverHandler : MonoBehaviour {
             }
         }
 	}
+
+    static void GameOver(Text gameOver) {
+        gameOver.text = "Game Over!";
+        PlayerMovement.movementEnabled = false;
+    }
 }
