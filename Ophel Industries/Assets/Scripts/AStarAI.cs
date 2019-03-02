@@ -5,22 +5,22 @@ using Pathfinding;
 using UnityEngine.UI;
 
 public class AStarAI : MonoBehaviour {
-	public Transform targetPosition;
-	public bool reachedEndOfPath;
-	public float speed = 2f;
-	public float nextWaypointDistance = 1;
-	public Path path;
+    public Transform targetPosition;
+    public bool reachedEndOfPath;
+    public float speed = 2f;
+    public float nextWaypointDistance = 1;
+    public Path path;
     public Text detectionText;
 
     static public bool caughtPlayer;
-    
+
     public float radius;
     public float coneAngle;
 
-	private int currentWaypoint = 0;
-	private Vector3 prevTargetPosition;
-	private Seeker seeker;
-	private bool DEBUG = false;
+    private int currentWaypoint = 0;
+    private Vector3 prevTargetPosition;
+    private Seeker seeker;
+    private bool DEBUG = false;
 
     private bool wallRotation;
     private bool endOfPathRotation, nextRotation;
@@ -28,9 +28,9 @@ public class AStarAI : MonoBehaviour {
 
     private DetectionMeter detectionMeter;
     // Use this for initialization
-    void Start () {
+    void Start() {
         caughtPlayer = false;
-		seeker = GetComponent<Seeker>();
+        seeker = GetComponent<Seeker>();
 
         if (isPlayerVisible()) {
             // start calculating a path to the target
@@ -38,15 +38,15 @@ public class AStarAI : MonoBehaviour {
                                          OnPathComplete);
         }
 
-		prevTargetPosition = targetPosition.position;
+        prevTargetPosition = targetPosition.position;
         rotated = false;
         wallRotation = false;
         endOfPathRotation = false;
         nextRotation = false;
         detectionMeter = new DetectionMeter(detectionText, this.gameObject);
-	}
+    }
 
-	public void Update () {
+    public void Update() {
         Debug.DrawRay(this.transform.position, this.transform.up, Color.magenta, 0.0f, false);
         detectionMeter.Update();
         //Debug.DrawRay(this.transform.position, direction, Color.blue, 10.0f, false);
@@ -54,22 +54,22 @@ public class AStarAI : MonoBehaviour {
         if (isPlayerVisible()) {
             if (detectionMeter.detectionRate < 100) {
                 detectionMeter.detectionRate++;
-
-                // update the path if the target transform.position has changed
-                if (targetPosition.position != prevTargetPosition) {
-                    prevTargetPosition = targetPosition.position;
-                    seeker.StartPath(transform.position, targetPosition.position,
-                                                      OnPathComplete);
-                    reachedEndOfPath = false;
-                    nextRotation = false;
-                    rotated = false;
-                    Debug.Log("Started new path");
-                }
-
-                Vector3 newDirection = (targetPosition.position - transform.position).normalized; // looking at player
-                Quaternion rotation = Quaternion.LookRotation(Vector3.forward, newDirection);
-                transform.rotation = new Quaternion(0, 0, rotation.z, rotation.w);
             }
+            // update the path if the target transform.position has changed
+            if (targetPosition.position != prevTargetPosition) {
+                prevTargetPosition = targetPosition.position;
+                seeker.StartPath(transform.position, targetPosition.position,
+                                                  OnPathComplete);
+                reachedEndOfPath = false;
+                nextRotation = false;
+                rotated = false;
+                Debug.Log("Started new path");
+            }
+
+            Vector3 newDirection = (targetPosition.position - transform.position).normalized; // looking at player
+            Quaternion rotation = Quaternion.LookRotation(Vector3.forward, newDirection);
+            transform.rotation = new Quaternion(0, 0, rotation.z, rotation.w);
+
         }
         else {
             if (detectionMeter.detectionRate != 0) {
@@ -122,7 +122,7 @@ public class AStarAI : MonoBehaviour {
         Vector3 velocity = dir * speed * speedFactor;
 
         // move the game object to the target
-        if(detectionMeter.detectionRate == 100  || (!isPlayerVisible() && !reachedEndOfPath)) {
+        if (detectionMeter.detectionRate == 100 || (!isPlayerVisible() && !reachedEndOfPath)) {
             transform.position += velocity * Time.deltaTime;
         }
 
@@ -132,12 +132,12 @@ public class AStarAI : MonoBehaviour {
                 StartCoroutine(Rotate(Vector3.forward, Mathf.Rad2Deg * coneAngle * 2.0f, 0.25f, true));
                 rotated = true;
             }
-            else if(!wallRotation && !endOfPathRotation && !nextRotation && !rotated){
+            else if (!wallRotation && !endOfPathRotation && !nextRotation && !rotated) {
                 nextRotation = true;
                 StartCoroutine(Rotate(Vector3.forward, 90, 0.25f));
                 rotated = true;
             }
-            if(nextRotation && !endOfPathRotation && !wallRotation) {
+            if (nextRotation && !endOfPathRotation && !wallRotation) {
                 StartCoroutine(Rotate(Vector3.forward, -180, 0.50f));
                 nextRotation = false;
             }
@@ -145,24 +145,24 @@ public class AStarAI : MonoBehaviour {
     }
 
     public void OnPathComplete(Path p) {
-		if (DEBUG) {	
-			Debug.Log("Path complete");
-			Debug.Log("Vector path: " + p.vectorPath.Count);
-		}
-		
-		if (!p.error) {
-			path = p;
-			currentWaypoint = 0;
-		}
-		else {
-			if (DEBUG) {
-				Debug.Log("Possible error: " + p.error);
-				Debug.Log("Vector path: " + p.vectorPath[0]);
-				Debug.Log("Vector path: " + p.vectorPath.Count);
-			}
-		}
-	}
-  
+        if (DEBUG) {
+            Debug.Log("Path complete");
+            Debug.Log("Vector path: " + p.vectorPath.Count);
+        }
+
+        if (!p.error) {
+            path = p;
+            currentWaypoint = 0;
+        }
+        else {
+            if (DEBUG) {
+                Debug.Log("Possible error: " + p.error);
+                Debug.Log("Vector path: " + p.vectorPath[0]);
+                Debug.Log("Vector path: " + p.vectorPath.Count);
+            }
+        }
+    }
+
     //NOT FINISHED ADDING VISION DETECTION TO PATH FINDING 
     //CHANGE THE VARIABLE NAMES
     public bool isPlayerVisible() {
@@ -231,11 +231,11 @@ public class AStarAI : MonoBehaviour {
 
     //checks if enemy's cone of vision hits the damn wall
     bool isCloseToWall() {
-        Collider2D collider  = this.GetComponent<Collider2D>();
-        Vector3 raycastDir = transform.up; 
+        Collider2D collider = this.GetComponent<Collider2D>();
+        Vector3 raycastDir = transform.up;
         Vector3 pos = this.transform.position;
         RaycastHit2D raycastHit = Physics2D.Raycast(pos + collider.bounds.extents.magnitude * raycastDir, raycastDir); //casts a ray to enemy's front direction
-        if(raycastHit != false && raycastHit.collider.tag.Equals("Wall") && raycastHit.distance < radius) { //if wall is hit and inside of vision radius
+        if (raycastHit != false && raycastHit.collider.tag.Equals("Wall") && raycastHit.distance < radius) { //if wall is hit and inside of vision radius
             return true;
         }
         return false;
@@ -253,12 +253,12 @@ public class AStarAI : MonoBehaviour {
         }
         // quaternion that saves the code from self destruction
         Quaternion from = transform.rotation; //initializing
-        Quaternion to = transform.rotation; 
+        Quaternion to = transform.rotation;
         //rotation that we want to do
         to *= Quaternion.Euler(axis * angle);
 
         float elapsed = 0.0f; // counter
-        while (elapsed < duration) { 
+        while (elapsed < duration) {
             transform.rotation = Quaternion.Slerp(from, to, elapsed / duration); //linear interpolation
             elapsed += Time.deltaTime; //update counter
             yield return null;
