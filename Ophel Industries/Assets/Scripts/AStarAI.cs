@@ -32,6 +32,10 @@ public class AStarAI : MonoBehaviour {
         caughtPlayer = false;
         seeker = GetComponent<Seeker>();
 
+        if(targetPosition == null) {
+            targetPosition = GameObject.Find("Player").transform;
+        }
+
         if (isPlayerVisible()) {
             // start calculating a path to the target
             seeker.StartPath(transform.position, targetPosition.position,
