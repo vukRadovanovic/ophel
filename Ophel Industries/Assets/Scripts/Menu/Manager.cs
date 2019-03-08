@@ -27,6 +27,7 @@ namespace Menu {
 	  void Update () {
       // quit to main menu if escape key is pressed
       if (Input.GetKeyDown(KeyCode.Escape)) {
+        Debug.Log("Escape");
         Application.LoadLevel("StartMenuScene");
       }
     }

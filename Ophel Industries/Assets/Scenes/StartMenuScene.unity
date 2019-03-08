@@ -666,7 +666,7 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 602489719}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -3.4340603, y: 4.403878, z: 0.0781129}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -797,6 +797,7 @@ GameObject:
   - component: {fileID: 1088588997}
   - component: {fileID: 1088588996}
   - component: {fileID: 1088588995}
+  - component: {fileID: 1088588998}
   m_Layer: 5
   m_Name: NewGameButton
   m_TagString: Untagged
@@ -861,18 +862,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1088588996}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 602489720}
-        m_MethodName: ShowNextScene
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: StartScene
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1088588996
@@ -909,6 +899,19 @@ CanvasRenderer:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1088588993}
   m_CullTransparentMesh: 0
+--- !u!114 &1088588998
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1088588993}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78a390003e53ec543a63820519cf72ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  button: {fileID: 1088588995}
+  sceneToLoad: StartScene
 --- !u!1 &1272749493
 GameObject:
   m_ObjectHideFlags: 0
@@ -1057,6 +1060,7 @@ GameObject:
   - component: {fileID: 1422185085}
   - component: {fileID: 1422185084}
   - component: {fileID: 1422185083}
+  - component: {fileID: 1422185086}
   m_Layer: 5
   m_Name: LoadGameButton
   m_TagString: Untagged
@@ -1121,18 +1125,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1422185084}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 602489720}
-        m_MethodName: ShowNextScene
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: DialogueScene
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1422185084
@@ -1169,6 +1162,19 @@ CanvasRenderer:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1422185081}
   m_CullTransparentMesh: 0
+--- !u!114 &1422185086
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1422185081}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78a390003e53ec543a63820519cf72ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  button: {fileID: 1422185083}
+  sceneToLoad: DialogueScene
 --- !u!1 &1469782745
 GameObject:
   m_ObjectHideFlags: 0
