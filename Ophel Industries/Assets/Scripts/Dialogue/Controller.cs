@@ -45,30 +45,14 @@ namespace Dialogue {
      */
 	  void Start() {
       CloseMessageDisplay();
-	  }
-	
-	  /**
+	  }	
+	 
+	  void Update() { }
+   
+    /**
      * Check if the current message has finished displaying and if the user
      * wants to move on to the next message.
      */
-	  void Update() {
-      /*
-      if (phraseDisplay.text == phrase) {
-        HandleMessageFinished();
-      }
-
-      if (Input.GetKeyDown(KeyCode.Space) && isOpen && finishedDisplay) {
-        HandleContinue();
-      }
-      else if (Dialogue.Manager.Instance.openDialogue) {
-          Debug.Log("Want to open dialogue");
-          Dialogue.Manager.Instance.openDialogue = false;
-          OpenMessageDisplay();
-          DisplayCurrentMessage();
-      }
-      */
-	  }
-
     public void HandleInput() {
       if (phraseDisplay.text == phrase) {
         HandleMessageFinished();

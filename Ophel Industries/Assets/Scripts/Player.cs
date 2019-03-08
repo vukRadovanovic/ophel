@@ -2,19 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour {
+public class Player : MonoBehaviour, Action.IMoveable {
 
+  public bool isMoving { get; set; }
+  public bool affectedByPause { get; set; }
   private float speakerCheckDist = 0.2f;
 
 	void Awake() {
-		
+    isMoving = true;
+    affectedByPause = false;
 	}
 	
 	void Update() {
     // talk to interactable person or object after pressing space
 	  if (Input.GetKeyDown(KeyCode.Space) && 
         !Dialogue.Controller.Instance.isTalking) {
-      Speaker speaker = SpeakerPresent();
+      Speaker speaker = DetectSpeaker();
 
       if (speaker != null) {
         // let speaker start dialogue
@@ -26,17 +29,22 @@ public class Player : MonoBehaviour {
       Dialogue.Controller.Instance.HandleInput();
     }
 
-    if (Dialogue.Controller.Instance.isTalking) {
-        // freeze the player
-        gameObject.GetComponent<PlayerMovement>().enabled = false;
-        gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+    // stop movement while the player is in a conversation
+    if (Dialogue.Controller.Instance.isTalking && isMoving) {
+        isMoving = false;
+        StopMovement();
     }
-    else {
-        gameObject.GetComponent<PlayerMovement>().enabled = true;
+    else if (!Dialogue.Controller.Instance.isTalking && !affectedByPause &&
+             !isMoving) {
+        // FIXME: this is dangerous since the player will always be able to move
+        //        if they are not in a conversation and frozen by some other
+        //        method
+        isMoving = true;
+        StartMovement();
     }
 	}
 
-  Speaker SpeakerPresent() {
+  Speaker DetectSpeaker() {
     Collider2D playerCollider = this.GetComponent<Collider2D>();
     Vector2 frontOfPlayer = (Vector2)transform.position + Vector2.up *
         (playerCollider.bounds.size.magnitude / 2.0f);
@@ -52,5 +60,22 @@ public class Player : MonoBehaviour {
     }
 
     return null;
+  }
+
+  /**
+   * Enable movement.
+   */
+  public void StartMovement() {
+    Debug.Log("Starting player movement");
+    gameObject.GetComponent<PlayerMovement>().enabled = true;
+  }
+
+  /**
+   * Freeze and disable movement.
+   */
+  public void StopMovement() {
+    Debug.Log("Stopping player movement");
+    gameObject.GetComponent<PlayerMovement>().enabled = false;
+    gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
   }
 }
