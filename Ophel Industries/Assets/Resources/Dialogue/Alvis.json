@@ -1,0 +1,30 @@
+{
+  "jsonItems":
+    [
+      {
+        "id": 0,
+        "messages": [
+          {
+            "name": "Alvis",
+            "phrase": "I used to be the CEO.",
+            "typeSpeed": 0.05
+          },
+          {
+            "name": "Pan",
+            "phrase": "I'm the CEO now.",
+            "typeSpeed": 0.05
+          }
+        ]
+      },
+      {
+        "id": 1,
+        "messages": [
+          {
+            "name": "Alvis",
+            "phrase": "Hello.",
+            "typeSpeed": 0.2
+          }
+        ]
+      }
+    ]
+}

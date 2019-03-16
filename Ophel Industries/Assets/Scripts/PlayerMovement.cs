@@ -2,46 +2,46 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour
-{
+public class PlayerMovement : MonoBehaviour {
 
     public float moveForce;
     public Rigidbody2D rb2D;
+    public static bool movementEnabled;
     public Animator animator;
-
     private bool holdingCrouch;
     private bool holdingRun;
 
     // Use this for initialization
-    void Awake()
-    {
+    void Awake() {
         holdingCrouch = false;
         holdingRun = false;
+        movementEnabled = true;
     }
 
     // Update is called once per frame
-    void Update()
-    {
+    void Update() {
+        if(movementEnabled == false) {
+            return;
+        }
         holdingRun = Input.GetKey(KeyCode.LeftShift);
         holdingCrouch = Input.GetKey(KeyCode.LeftControl);
     }
 
     // handle physics
-    void FixedUpdate()
-    {
+    void FixedUpdate() {
+        if (movementEnabled == false) {
+            return;
+        }
         HandleMovement();
     }
 
-    void HandleMovement()
-    {
+    void HandleMovement() {
         float modMoveForce = moveForce;
 
-        if (holdingCrouch)
-        {
+        if (holdingCrouch) {
             modMoveForce = moveForce * 0.5f;
         }
-        else if (holdingRun)
-        {
+        else if (holdingRun) {
             modMoveForce = moveForce * 1.5f;
         }
 
