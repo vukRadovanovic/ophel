@@ -851,7 +851,7 @@ Tilemap:
   - first: {x: -4, y: -5, z: 0}
     second:
       m_TileIndex: 5
-      m_TileSpriteIndex: 5
+      m_TileSpriteIndex: 8
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_ObjectToInstantiate: {fileID: 0}
@@ -2143,14 +2143,14 @@ Tilemap:
     m_Data: {fileID: 0}
   - m_RefCount: 0
     m_Data: {fileID: 0}
-  - m_RefCount: 1
-    m_Data: {fileID: 21300002, guid: a07a2d89285ab5f4095f0d3c0c737230, type: 3}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
   - m_RefCount: 1
     m_Data: {fileID: 21300004, guid: a07a2d89285ab5f4095f0d3c0c737230, type: 3}
   - m_RefCount: 10
     m_Data: {fileID: 21300014, guid: a07a2d89285ab5f4095f0d3c0c737230, type: 3}
-  - m_RefCount: 0
-    m_Data: {fileID: 0}
+  - m_RefCount: 1
+    m_Data: {fileID: 21300002, guid: a07a2d89285ab5f4095f0d3c0c737230, type: 3}
   - m_RefCount: 4
     m_Data: {fileID: 21300016, guid: a07a2d89285ab5f4095f0d3c0c737230, type: 3}
   - m_RefCount: 14
@@ -2336,8 +2336,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9539e666799ac58409d28c19d984ba9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveForce: 15
+  moveForce: 5
   rb2D: {fileID: 1373597014}
+  animator: {fileID: 1373597017}
 --- !u!212 &1373597016
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2432,7 +2433,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: -0.038327694}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -2443,7 +2444,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1, y: 1.5365839}
   m_EdgeRadius: 0
 --- !u!1 &1549371580
 GameObject:
@@ -2739,8 +2740,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2027911009}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 9.49, y: 0.018, z: 0}
-  m_LocalScale: {x: 1.0276618, y: 9.999535, z: 1}
+  m_LocalPosition: {x: 9.516, y: 0.018, z: 0}
+  m_LocalScale: {x: 1.0790448, y: 9.999535, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 3
