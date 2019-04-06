@@ -27,13 +27,23 @@ namespace Menu {
 	  void Update () {
       // quit to main menu if escape key is pressed
       if (Input.GetKeyDown(KeyCode.Escape)) {
-        Debug.Log("Escape");
+        Debug.Log("Quitting to main menu");
         Application.LoadLevel("StartMenuScene");
       }
     }
 
     public void ShowNextScene(string sceneName) {
       Application.LoadLevel(sceneName);
+    }
+
+    public void ShowPauseMenu() {
+      Transform pauseMenu = gameObject.transform.Find("PauseMenuCanvas");
+      pauseMenu.GetComponent<Canvas>().enabled = true;
+    }
+
+    public void HidePauseMenu() {
+      Transform pauseMenu = gameObject.transform.Find("PauseMenuCanvas");
+      pauseMenu.GetComponent<Canvas>().enabled = false;
     }
 
     public void QuitApplication() {

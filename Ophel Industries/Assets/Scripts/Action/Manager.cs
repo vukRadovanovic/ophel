@@ -53,6 +53,7 @@ namespace Action {
       }
 
       paused = true;
+      Menu.Manager.Instance.ShowPauseMenu();
     }
 
     /**
@@ -76,6 +77,7 @@ namespace Action {
       }
 
       paused = false;
+      Menu.Manager.Instance.HidePauseMenu();
     }
 
     /**
